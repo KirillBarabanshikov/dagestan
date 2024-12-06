@@ -1,0 +1,40 @@
+.body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .loader {
+        svg {
+            display: block;
+        }
+    }
+
+    &.main {
+        h2 {
+            font-weight: 700;
+            font-size: 160px;
+            margin-bottom: 40px;
+        }
+
+        .loader {
+            svg {
+                width: 302.96px;
+                height: 295.25px;
+            }
+        }
+    }
+
+    &.controller {
+        h2 {
+            font-weight: 700;
+            font-size: 100px;
+            margin-bottom: 16px;
+        }
+
+        p {
+            color: var(--color-sub-black);
+            font-size: 32px;
+            margin-bottom: 40px;
+        }
+    }
+}

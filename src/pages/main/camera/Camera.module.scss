@@ -1,0 +1,31 @@
+.camera {
+    position: relative;
+
+    .title {
+        position: absolute;
+        top: 109px;
+        left: 0;
+        right: 0;
+        color: var(--color-white);
+        font-size: 160px;
+        text-align: center;
+    }
+
+    .person {
+        position: absolute;
+        top: 327px;
+        left: 288.55px;
+    }
+
+    .timer {
+        position: absolute;
+        bottom: 173px;
+        left: calc(50% - 175px);
+    }
+
+    .flash {
+        position: absolute;
+        inset: 0;
+        background-color: var(--color-white);
+    }
+}

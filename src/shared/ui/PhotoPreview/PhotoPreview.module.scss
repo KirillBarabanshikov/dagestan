@@ -1,0 +1,23 @@
+.preview {
+    filter: grayscale(1);
+    transform: rotate(3deg);
+
+    &.isPayed {
+        filter: unset;
+        transform: unset;
+    }
+
+    &.main {
+        width: 1861px;
+        height: 3310px;
+        border: 20px solid var(--color-white);
+        border-radius: 80px;
+    }
+
+    &.controller {
+        width: 521.5px;
+        height: 927.55px;
+        border: 12px solid var(--color-white);
+        border-radius: 24px;
+    }
+}

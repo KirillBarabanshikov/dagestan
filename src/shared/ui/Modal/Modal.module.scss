@@ -1,0 +1,50 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    background-color: #292929b2;
+    z-index: 10;
+}
+
+.modalWrap {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 11;
+    padding: 66px;
+
+    .modalBody {
+        padding: 140px 136px;
+        background-color: var(--color-white);
+        border-radius: 20px;
+        pointer-events: initial;
+        width: 100%;
+        max-height: 95vh;
+        overflow-y: auto;
+
+        .titleWrap {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 24px;
+
+            .title {
+                font-weight: 500;
+                font-size: 24px;
+                line-height: 15.84px;
+
+                @media screen and (max-width: 992px) {
+                    font-size: 18px;
+                }
+            }
+
+            svg {
+                color: var(--color-blue-tertiary);
+                cursor: pointer;
+            }
+        }
+    }
+}

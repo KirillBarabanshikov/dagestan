@@ -1,0 +1,22 @@
+.timerWrapper {
+    position: relative;
+    width: 350px;
+    height: 577px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .number {
+        width: 350px;
+        height: 350px;
+        font-size: 264px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--color-white);
+        border-radius: 400px;
+        font-weight: 700;
+        color: var(--color-green);
+        position: absolute;
+    }
+}
