@@ -25,6 +25,7 @@ const initialState: State = {
     costume: undefined,
     scene: undefined,
     statisticId: undefined,
+    faceSwapId: undefined,
 };
 
 export const useControllerStore = create<State & Actions>()(

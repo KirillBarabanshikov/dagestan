@@ -35,6 +35,7 @@ export const CostumeSlider: FC<ICostumeSliderProps> = ({ costumes, onSlideChange
                             src={`${API_URL}${costume.image}`}
                             alt={costume.title}
                             draggable={false}
+                            transition={{ damping: 0 }}
                         />
                     </SwiperSlide>
                 );

@@ -65,6 +65,12 @@
     gap: 24px;
     width: 100%;
 
+    p {
+        color: var(--color-sub-black);
+        font-size: 32px;
+        text-align: center;
+    }
+
     input {
         width: 100%;
         height: 88px;

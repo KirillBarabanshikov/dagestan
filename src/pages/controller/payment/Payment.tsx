@@ -1,20 +1,20 @@
+import axios from 'axios';
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { sendEvent, sendStatisticPayed } from '@/shared/api';
 import { PAYMENT_PASSWORD, PAYMENT_URL, PHOTO_COST } from '@/shared/consts';
+import { useControllerStore } from '@/shared/store';
 import { AlertModal, Button, Keyboard, Modal, SecretButton } from '@/shared/ui';
 
 import styles from './Payment.module.scss';
-import axios from 'axios';
-import { sendEvent, sendStatisticPayed } from '@/shared/api';
-// import { useControllerStore } from '@/shared/store';
 
 export const Payment = () => {
     const [alertState, setAlertState] = useState<'none' | 'success' | 'failed' | 'pending'>('none');
     const [showKeyboard, setShowKeyboard] = useState(false);
     const inputRef = useRef<HTMLInputElement | null>(null);
     const navigate = useNavigate();
-    // const statisticId = useControllerStore((state) => state.statisticId);
+    const statisticId = useControllerStore((state) => state.statisticId);
 
     const paymentEvent = async () => {
         const data = [
@@ -32,9 +32,10 @@ export const Payment = () => {
                 },
             });
             if (response.data.result === 'success') {
-                // statisticId && (await sendStatisticPayed(statisticId));
-                await sendStatisticPayed(1);
-                // await sendEvent({ action: 'payed' });
+                if (statisticId) {
+                    await sendStatisticPayed(statisticId);
+                }
+                await sendEvent({ action: 'payed' });
                 setAlertState('success');
             } else {
                 setAlertState('failed');
@@ -101,9 +102,12 @@ export const Payment = () => {
                 </div>
             </Modal>
             <Modal isOpen={alertState === 'pending'}>
-                <div className={styles.modal}>
-                    <h3>Оплатите</h3>
-                    <p>Оплатите</p>
+                <div className={styles.modalBody}>
+                    <h3>Произведите оплату</h3>
+                    <p>
+                        Для получения фото необходимо произвести оплату. После оплаты вы сможете забрать напечатанную
+                        фотографию, а также получить цифровую версии фото. Следуйте инструкции на экране.
+                    </p>
                 </div>
             </Modal>
         </>

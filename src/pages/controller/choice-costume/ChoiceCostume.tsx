@@ -61,14 +61,7 @@ export const ChoiceCostume = () => {
 
     const handleSlideChange = async (swiper: SwiperType) => {
         const newCostume = costumes[swiper.realIndex];
-        if (newCostume) {
-            setCostume(newCostume);
-            try {
-                await sendEvent({ action: 'selectCostume', payload: newCostume });
-            } catch (error) {
-                console.error(error);
-            }
-        }
+        if (newCostume) setCostume(newCostume);
     };
 
     const handleBack = async () => {

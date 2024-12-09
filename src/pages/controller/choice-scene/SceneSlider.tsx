@@ -34,6 +34,7 @@ export const SceneSlider: FC<ISceneSliderProps> = ({ scenes, onSlideChange, swip
                             src={API_URL + scene.image}
                             alt={'scene'}
                             draggable={false}
+                            transition={{ damping: 0 }}
                         />
                     </SwiperSlide>
                 );

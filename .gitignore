@@ -25,3 +25,4 @@ dist-ssr
 
 .env
 public/video.mp4
+public/video.webm

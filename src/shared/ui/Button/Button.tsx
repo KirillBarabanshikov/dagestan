@@ -22,7 +22,7 @@ export const Button: FC<IButtonProps> = ({
 }) => {
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         if (!clickSound.playing()) clickSound.play();
-        onClick && onClick(e);
+        if (onClick) onClick(e);
     };
 
     return (

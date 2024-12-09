@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { fetchFaceSwapPhoto } from '@/shared/api';
@@ -8,7 +9,6 @@ import { TSSEActions } from '@/shared/types';
 import { Button, PhotoPreview } from '@/shared/ui';
 
 import styles from './Result.module.scss';
-import { useState } from 'react';
 
 export const Result = () => {
     const [isPayed, setIsPayed] = useState(false);

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { API_URL } from '@/shared/consts';
@@ -12,6 +12,7 @@ export const Costume = () => {
     const costume = location.state as ICostume;
     const navigate = useNavigate();
     const [selectedCostume, setSelectedCostume] = useState(costume);
+    const videoRef = useRef<HTMLVideoElement | null>(null);
 
     useSSE<{ action: TSSEActions; payload: any }>({
         onMessage: (data) => {
@@ -27,10 +28,16 @@ export const Costume = () => {
         },
     });
 
+    useEffect(() => {
+        if (videoRef.current) {
+            videoRef.current.load();
+        }
+    }, [selectedCostume]);
+
     return (
         <div className={styles.costume}>
             {selectedCostume && (
-                <video key={selectedCostume.id} autoPlay loop muted playsInline>
+                <video ref={videoRef} autoPlay loop muted playsInline>
                     <source src={`${API_URL}${selectedCostume.videoName}`} />
                 </video>
             )}
