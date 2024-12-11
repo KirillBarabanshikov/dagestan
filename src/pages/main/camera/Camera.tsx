@@ -48,14 +48,14 @@ export const Camera = () => {
         const drawToCanvas = () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            const scale = Math.max(canvas.width / video.videoHeight, canvas.height / video.videoWidth); // Обратите внимание на смену ширины и высоты
-            const x = (canvas.width - video.videoHeight * scale) / 2; // Поменяли местами videoWidth и videoHeight
+            const scale = Math.max(canvas.width / video.videoHeight, canvas.height / video.videoWidth);
+            const x = (canvas.width - video.videoHeight * scale) / 2;
             const y = (canvas.height - video.videoWidth * scale) / 2;
 
             ctx.save();
-            ctx.translate(canvas.width / 2, canvas.height / 2); // Центрируем точку вращения
-            ctx.rotate(-Math.PI / 2); // Вращаем на 90 градусов (π/2 радиан)
-            ctx.translate(-canvas.height / 2, -canvas.width / 2); // Настраиваем смещение для корректного отображения
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.translate(-canvas.height / 2, -canvas.width / 2);
             ctx.drawImage(video, x, y, video.videoWidth * scale, video.videoHeight * scale);
             ctx.restore();
 
