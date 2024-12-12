@@ -61,6 +61,10 @@
                 width: 48px !important;
                 height: 48px !important;
             }
+
+            &:disabled {
+                pointer-events: none;
+            }
         }
     }
 }

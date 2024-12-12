@@ -46,11 +46,12 @@ export const Payment = () => {
         }
     };
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
         if (!inputRef.current) return;
         if (inputRef.current.value === PAYMENT_PASSWORD) {
             setAlertState('success');
             setShowKeyboard(false);
+            await sendEvent({ action: 'payed' });
         }
     };
 

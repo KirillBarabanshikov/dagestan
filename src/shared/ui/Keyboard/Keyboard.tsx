@@ -9,9 +9,10 @@ interface IKeyboardProps {
     onEnter: () => void;
     variant?: 'default' | 'num';
     className?: string;
+    isLoading?: boolean;
 }
 
-export const Keyboard: FC<IKeyboardProps> = ({ inputRef, onEnter, className, variant = 'default' }) => {
+export const Keyboard: FC<IKeyboardProps> = ({ inputRef, onEnter, className, variant = 'default', isLoading }) => {
     const [isCaps, setIsCaps] = useState(false);
     const [currentLayout, setCurrentLayout] = useState<'rus' | 'en' | 'num'>('en');
 
@@ -76,6 +77,7 @@ export const Keyboard: FC<IKeyboardProps> = ({ inputRef, onEnter, className, var
                                       data-code={code}
                                       data-key={isCaps ? key.toUpperCase() : key}
                                       className={clsx(styles.key, isCaps && styles.isCaps, styles[code])}
+                                      disabled={isLoading}
                                   >
                                       {key}
                                   </button>
