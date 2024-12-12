@@ -1,17 +1,19 @@
 import clsx from 'clsx';
 import React, { FC, RefObject, useState } from 'react';
 
-import { keyboard } from './data/data.ts';
+import { keyboard, keyboardNum } from './data/data.ts';
 import styles from './Keyboard.module.scss';
 
 interface IKeyboardProps {
     inputRef: RefObject<HTMLInputElement>;
     onEnter: () => void;
+    variant?: 'default' | 'num';
     className?: string;
 }
 
-export const Keyboard: FC<IKeyboardProps> = ({ inputRef, onEnter, className }) => {
+export const Keyboard: FC<IKeyboardProps> = ({ inputRef, onEnter, className, variant = 'default' }) => {
     const [isCaps, setIsCaps] = useState(false);
+    const [currentLayout, setCurrentLayout] = useState<'rus' | 'en' | 'num'>('en');
 
     function onChange(e: React.MouseEvent<HTMLDivElement>) {
         const target = e.target as HTMLElement;
@@ -37,6 +39,12 @@ export const Keyboard: FC<IKeyboardProps> = ({ inputRef, onEnter, className }) =
             case 'Enter':
                 return onEnter();
 
+            case 'KeyLang':
+                return setCurrentLayout((prevState) => (prevState === 'en' ? 'rus' : 'en'));
+
+            case 'KeyNum':
+                return setCurrentLayout('num');
+
             case 'CapsLock':
                 setIsCaps((prev) => !prev);
                 break;
@@ -58,22 +66,39 @@ export const Keyboard: FC<IKeyboardProps> = ({ inputRef, onEnter, className }) =
             onMouseDown={(e) => e.preventDefault()}
             className={clsx(styles.keyboard, className)}
         >
-            {keyboard.num.map((row, i) => {
-                return (
-                    <div key={i} className={styles.row}>
-                        {row.map(({ code, key }) => (
-                            <button
-                                key={code}
-                                data-code={code}
-                                data-key={isCaps ? key.toUpperCase() : key}
-                                className={clsx(styles.key, isCaps && styles.isCaps, styles[code])}
-                            >
-                                {key}
-                            </button>
-                        ))}
-                    </div>
-                );
-            })}
+            {variant === 'default'
+                ? keyboard[currentLayout].map((row, i) => {
+                      return (
+                          <div key={i} className={styles.row}>
+                              {row.map(({ code, key }) => (
+                                  <button
+                                      key={code}
+                                      data-code={code}
+                                      data-key={isCaps ? key.toUpperCase() : key}
+                                      className={clsx(styles.key, isCaps && styles.isCaps, styles[code])}
+                                  >
+                                      {key}
+                                  </button>
+                              ))}
+                          </div>
+                      );
+                  })
+                : keyboardNum.num.map((row, i) => {
+                      return (
+                          <div key={i} className={styles.row}>
+                              {row.map(({ code, key }) => (
+                                  <button
+                                      key={code}
+                                      data-code={code}
+                                      data-key={isCaps ? key.toUpperCase() : key}
+                                      className={clsx(styles.key, isCaps && styles.isCaps, styles[code], styles.num)}
+                                  >
+                                      {key}
+                                  </button>
+                              ))}
+                          </div>
+                      );
+                  })}
         </div>
     );
 };

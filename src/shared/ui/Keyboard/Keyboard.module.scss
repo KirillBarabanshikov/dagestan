@@ -6,6 +6,8 @@
 
     border-radius: 24px;
     padding: 24px;
+    width: 840px;
+    height: 264px;
     background: #d1d1d1;
 
     .row {
@@ -23,6 +25,42 @@
             line-height: 100%;
             text-align: center;
             color: #303030;
+
+            &.isCaps {
+                text-transform: uppercase;
+            }
+
+            &.Backspace {
+                background-image: url('@/shared/assets/icons/backspace.svg');
+                background-repeat: no-repeat;
+                background-position: center;
+                width: 96px;
+                font-size: 0;
+            }
+
+            &.CapsLock {
+                background-image: url('@/shared/assets/icons/capsLock.svg');
+                background-repeat: no-repeat;
+                background-position: center;
+                width: 72px;
+                font-size: 0;
+            }
+
+            &.Enter,
+            &.KeyLang,
+            &.KeyNum {
+                width: 96px;
+                text-transform: initial !important;
+            }
+
+            &.Space {
+                width: 480px;
+            }
+
+            &.num {
+                width: 48px !important;
+                height: 48px !important;
+            }
         }
     }
 }

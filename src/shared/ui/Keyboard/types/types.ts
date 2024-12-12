@@ -1,4 +1,6 @@
 export interface IKeyboard {
+    rus: IKey[][];
+    en: IKey[][];
     num: IKey[][];
 }
 

@@ -13,6 +13,8 @@ interface IAlertModalProps {
     onError: () => void;
     isError?: boolean;
     withClose?: boolean;
+    title?: string;
+    subtitle?: string;
 }
 
 export const AlertModal: FC<IAlertModalProps> = ({
@@ -22,17 +24,24 @@ export const AlertModal: FC<IAlertModalProps> = ({
     onError,
     isError,
     withClose = true,
+    title,
+    subtitle,
 }) => {
     return (
         <Modal isOpen={isOpen}>
             <div className={styles.body}>
                 {isError ? <ErrorIcon className={styles.icon} /> : <SuccessIcon className={styles.icon} />}
-                <h3>{isError ? 'Произошла ошибка' : 'Оплата прошла успешно'}</h3>
-                <p>
-                    {isError
-                        ? 'Пожалуйста, попробуйте еще раз.'
-                        : 'Нажмите продолжить, чтобы получить цифровую версию фото'}
-                </p>
+                {title ? <h3>{title}</h3> : <h3>{isError ? 'Произошла ошибка' : 'Оплата прошла успешно'}</h3>}
+                {subtitle ? (
+                    <p>{subtitle}</p>
+                ) : (
+                    <p>
+                        {isError
+                            ? 'Пожалуйста, попробуйте еще раз.'
+                            : 'Нажмите продолжить, чтобы получить цифровую версию фото'}
+                    </p>
+                )}
+
                 <div className={styles.buttons}>
                     {isError ? (
                         <>

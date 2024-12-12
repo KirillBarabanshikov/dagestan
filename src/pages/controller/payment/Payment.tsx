@@ -97,7 +97,7 @@ export const Payment = () => {
                 <div className={styles.modalBody}>
                     <h3>Введите пароль</h3>
                     <input type={'password'} ref={inputRef} placeholder={'Пароль'} />
-                    <Keyboard inputRef={inputRef} onEnter={onSubmit} />
+                    <Keyboard inputRef={inputRef} onEnter={onSubmit} variant={'num'} />
                     <Button onClick={onSubmit}>Отправить</Button>
                 </div>
             </Modal>

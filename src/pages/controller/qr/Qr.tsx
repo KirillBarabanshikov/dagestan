@@ -1,42 +1,59 @@
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { fetchQr, sendEvent } from '@/shared/api';
-import { useControllerStore } from '@/shared/store';
-import { Button } from '@/shared/ui';
+import { sendEvent } from '@/shared/api';
+import { AlertModal, Button, Keyboard } from '@/shared/ui';
 
 import styles from './Qr.module.scss';
+import { useRef, useState } from 'react';
+import { instance } from '@/shared/api/instance.ts';
+import { useControllerStore } from '@/shared/store';
 
 export const Qr = () => {
-    const [qr, setQr] = useState<string>('');
-    const { faceSwapId } = useControllerStore((state) => state);
+    const inputRef = useRef<HTMLInputElement | null>(null);
     const navigate = useNavigate();
-
-    useEffect(() => {
-        if (!faceSwapId) return;
-
-        const handleQr = async () => {
-            const qr = await fetchQr(faceSwapId);
-            setQr(qr);
-        };
-        handleQr();
-    }, [faceSwapId]);
+    const { faceSwapId } = useControllerStore((state) => state);
+    const [showAlert, setShowAlert] = useState<'none' | 'success' | 'error'>('none');
 
     const handleBack = async () => {
         await sendEvent({ action: 'exit' });
         navigate('/controller');
     };
 
+    const onEnter = async () => {
+        if (!inputRef.current) return;
+
+        try {
+            await instance.post('/email', {
+                faceSwapsId: [faceSwapId],
+                email: inputRef.current.value.trim(),
+            });
+            setShowAlert('success');
+        } catch (error) {
+            console.error(error);
+            setShowAlert('error');
+        }
+    };
+
     return (
         <div className={styles.qr}>
             <div className={styles.wrap}>
                 <h2>ПОЛУЧИТЕ ФОТО</h2>
-                <p>Отсканируйте или сфотографируйте QR-КОД, чтобы получить цифровую версию фото</p>
-                <div dangerouslySetInnerHTML={{ __html: qr }} className={styles.qrWrap} />
+                <p>Введите email, чтобы получить цифровую версию фото</p>
+                <input type='text' ref={inputRef} className={styles.input} placeholder={'Email'} />
+                <Keyboard inputRef={inputRef} onEnter={onEnter} className={styles.keyboard} />
                 <Button fullWidth onClick={handleBack}>
                     на главную
                 </Button>
             </div>
+            <AlertModal
+                isOpen={showAlert !== 'none'}
+                isError={showAlert === 'error'}
+                onError={handleBack}
+                onClose={() => setShowAlert('none')}
+                onSuccess={handleBack}
+                title={showAlert === 'error' ? 'Произошла ошибка' : 'Успешно отправлено'}
+                subtitle={showAlert === 'error' ? 'Пожалуйста, попробуйте еще раз.' : 'Фото отправлено на email'}
+            />
         </div>
     );
 };
