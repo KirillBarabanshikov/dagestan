@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
 import { sendEvent } from '@/shared/api';
-import { AlertModal, Button, Keyboard } from '@/shared/ui';
+import { AlertModal, Button, Keyboard, Loader } from '@/shared/ui';
 
 import styles from './Qr.module.scss';
 import { useRef, useState } from 'react';
@@ -45,10 +45,14 @@ export const Qr = () => {
                 <p>Введите email, чтобы получить цифровую версию фото</p>
                 <input type='text' ref={inputRef} className={styles.input} placeholder={'Email'} />
                 <Keyboard inputRef={inputRef} onEnter={onEnter} className={styles.keyboard} isLoading={isLoading} />
-                <Button fullWidth onClick={handleBack} disabled={isLoading}>
+                <Button fullWidth onClick={onEnter} disabled={isLoading} className={styles.button}>
+                    отправить
+                </Button>
+                <Button theme={'lightgreen'} fullWidth onClick={handleBack} disabled={isLoading}>
                     на главную
                 </Button>
             </div>
+            <Loader isLoading={isLoading} title={'Пожалуйста,подождите...'} variant={'controller'} />
             <AlertModal
                 isOpen={showAlert !== 'none'}
                 isError={showAlert === 'error'}
