@@ -18,7 +18,7 @@ export const MainScreensaver = () => {
 
     return (
         <div className={styles.mainScreensaver}>
-            <video autoPlay loop muted playsInline>
+            <video autoPlay loop playsInline>
                 <source src={'/video.webm'} type='video/webm' />
             </video>
             <h1>Примерим Дагестанский костюм?</h1>
