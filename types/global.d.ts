@@ -7,6 +7,7 @@ declare global {
         INACTIVITY_TIMEOUT: number;
         DEVICE_ID: string;
         PAYMENT_URL: string;
+        PRINT_URL: string;
         PHOTO_COST: number;
     }
 }

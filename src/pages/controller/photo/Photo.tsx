@@ -38,7 +38,9 @@ export const Photo = () => {
                     раз
                 </p>
                 <div className={styles.buttons}>
-                    <Button onClick={() => navigate('/controller/payment')}>сохранить и напечатать</Button>
+                    <Button onClick={() => navigate('/controller/payment', { state: API_URL + photo?.image })}>
+                        сохранить и напечатать
+                    </Button>
                     <Button onClick={handleRetry}>повторить</Button>
                 </div>
             </div>

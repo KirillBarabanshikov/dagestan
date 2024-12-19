@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { sendEvent, sendStatisticPayed } from '@/shared/api';
-import { PAYMENT_PASSWORD, PAYMENT_URL, PHOTO_COST } from '@/shared/consts';
+import { PAYMENT_PASSWORD, PAYMENT_URL, PHOTO_COST, PRINT_URL } from '@/shared/consts';
 import { useControllerStore } from '@/shared/store';
 import { AlertModal, Button, Keyboard, Modal, SecretButton } from '@/shared/ui';
 
@@ -15,6 +15,8 @@ export const Payment = () => {
     const inputRef = useRef<HTMLInputElement | null>(null);
     const navigate = useNavigate();
     const statisticId = useControllerStore((state) => state.statisticId);
+    const location = useLocation();
+    const photoPath: string = location.state;
 
     const paymentEvent = async () => {
         const data = [
@@ -34,6 +36,7 @@ export const Payment = () => {
             if (response.data.result === 'success') {
                 if (statisticId) {
                     await sendStatisticPayed(statisticId);
+                    await axios.get(PRINT_URL, { params: { path: photoPath } });
                 }
                 await sendEvent({ action: 'payed' });
                 setAlertState('success');
@@ -51,7 +54,7 @@ export const Payment = () => {
         if (inputRef.current.value === PAYMENT_PASSWORD) {
             setAlertState('success');
             setShowKeyboard(false);
-            await sendEvent({ action: 'payed' });
+            await axios.get(PRINT_URL, { params: { path: photoPath } });
         }
     };
 

@@ -1,12 +1,12 @@
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { sendEvent } from '@/shared/api';
+import { instance } from '@/shared/api/instance.ts';
+import { useControllerStore } from '@/shared/store';
 import { AlertModal, Button, Keyboard } from '@/shared/ui';
 
 import styles from './Qr.module.scss';
-import { useRef, useState } from 'react';
-import { instance } from '@/shared/api/instance.ts';
-import { useControllerStore } from '@/shared/store';
 
 export const Qr = () => {
     const inputRef = useRef<HTMLInputElement | null>(null);
