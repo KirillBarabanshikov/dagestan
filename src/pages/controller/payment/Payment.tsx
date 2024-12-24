@@ -1,9 +1,9 @@
-import axios from 'axios';
 import { useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { sendEvent, sendStatisticPayed } from '@/shared/api';
-import { PAYMENT_PASSWORD, PAYMENT_URL, PHOTO_COST, PRINT_URL } from '@/shared/consts';
+import { paymentEvent, sendEvent, sendStatisticPayed } from '@/shared/api';
+import { printEvent } from '@/shared/api/queries.ts';
+import { PAYMENT_PASSWORD, PHOTO_COST } from '@/shared/consts';
 import { useControllerStore } from '@/shared/store';
 import { AlertModal, Button, Keyboard, Modal, SecretButton } from '@/shared/ui';
 
@@ -18,27 +18,12 @@ export const Payment = () => {
     const location = useLocation();
     const photoPath: string = location.state;
 
-    const paymentEvent = async () => {
-        const data = [
-            {
-                title: 'Фото в телеграм',
-                count: 1,
-                price: PHOTO_COST,
-            },
-        ];
+    const handlePayment = async () => {
         try {
             setAlertState('pending');
-            const response = await axios.post<{ result: string }>(PAYMENT_URL, data, {
-                headers: {
-                    'Content-Type': 'application/json; charset=utf-8',
-                },
-            });
-            if (response.data.result === 'success') {
-                if (statisticId) {
-                    await sendStatisticPayed(statisticId);
-                    await axios.get(PRINT_URL, { params: { path: photoPath } });
-                }
-                await sendEvent({ action: 'payed' });
+            const response = await paymentEvent();
+            if (response.result === 'success') {
+                await handlePaymentSuccess();
                 setAlertState('success');
             } else {
                 setAlertState('failed');
@@ -49,18 +34,32 @@ export const Payment = () => {
         }
     };
 
-    const onSubmit = async () => {
-        if (!inputRef.current) return;
-        if (inputRef.current.value === PAYMENT_PASSWORD) {
+    const handlePaymentSuccess = async () => {
+        try {
+            if (statisticId) await sendStatisticPayed(statisticId);
+            await printEvent(photoPath);
+            await sendEvent({ action: 'payed' });
+        } catch (error) {
+            console.warn(error);
+        }
+    };
+
+    const handlePasswordSubmit = async () => {
+        if (inputRef.current?.value === PAYMENT_PASSWORD) {
             setAlertState('success');
             setShowKeyboard(false);
-            await axios.get(PRINT_URL, { params: { path: photoPath } });
+            try {
+                await printEvent(photoPath);
+            } catch (error) {
+                console.warn(error);
+            }
         }
     };
 
     return (
         <>
             <SecretButton onSecretAction={() => setShowKeyboard(true)} />
+
             <div className={styles.payment}>
                 <div className={styles.wrap}>
                     <h2>Произведите оплату</h2>
@@ -72,7 +71,7 @@ export const Payment = () => {
                         <div className={styles.priceLabel}>Сумма к оплате:</div>
                         <div className={styles.price}>{PHOTO_COST}₽</div>
                     </div>
-                    <Button fullWidth onClick={paymentEvent} className={styles.button}>
+                    <Button fullWidth onClick={handlePayment} className={styles.button}>
                         Оплатить
                     </Button>
                     <Button
@@ -87,6 +86,7 @@ export const Payment = () => {
                     </Button>
                 </div>
             </div>
+
             <AlertModal
                 isOpen={alertState == 'success' || alertState === 'failed'}
                 isError={alertState === 'failed'}
@@ -97,14 +97,16 @@ export const Payment = () => {
                     navigate('/controller');
                 }}
             />
+
             <Modal isOpen={showKeyboard} onClose={() => setShowKeyboard(false)}>
                 <div className={styles.modalBody}>
                     <h3>Введите пароль</h3>
                     <input type={'password'} ref={inputRef} placeholder={'Пароль'} />
-                    <Keyboard inputRef={inputRef} onEnter={onSubmit} variant={'num'} />
-                    <Button onClick={onSubmit}>Отправить</Button>
+                    <Keyboard inputRef={inputRef} onEnter={handlePasswordSubmit} variant={'num'} />
+                    <Button onClick={handlePasswordSubmit}>Отправить</Button>
                 </div>
             </Modal>
+
             <Modal isOpen={alertState === 'pending'}>
                 <div className={styles.modalBody}>
                     <h3>Произведите оплату</h3>

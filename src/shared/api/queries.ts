@@ -1,3 +1,7 @@
+import axios from 'axios';
+
+import { PAYMENT_URL, PHOTO_COST, PRINT_URL } from '@/shared/consts';
+
 import { ICostume, TGender, TSSEActions } from '../types';
 import { instance } from './instance';
 
@@ -72,5 +76,34 @@ export async function fetchQr(id: number) {
         return response.data;
     } catch (error) {
         throw new Error(`Failed to fetch qr: ${error}`);
+    }
+}
+
+export async function paymentEvent() {
+    const data = [
+        {
+            title: 'Фото в телеграм',
+            count: 1,
+            price: PHOTO_COST,
+        },
+    ];
+
+    try {
+        const response = await axios.post<{ result: string }>(PAYMENT_URL, data, {
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error(`Failed to payment event: ${error}`);
+    }
+}
+
+export async function printEvent(path: string) {
+    try {
+        await axios.get(PRINT_URL, { params: { path } });
+    } catch (error) {
+        throw new Error(`Failed to print event: ${error}`);
     }
 }
