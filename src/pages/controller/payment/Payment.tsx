@@ -45,7 +45,7 @@ export const Payment = () => {
             setAlertState('success');
             setShowKeyboard(false);
             try {
-                await printEvent(photoPath);
+                await handlePaymentSuccess();
             } catch (error) {
                 console.warn(error);
             }
