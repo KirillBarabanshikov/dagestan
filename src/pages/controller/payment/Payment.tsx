@@ -35,13 +35,9 @@ export const Payment = () => {
     };
 
     const handlePaymentSuccess = async () => {
-        try {
-            if (statisticId) await sendStatisticPayed(statisticId);
-            await printEvent(photoPath);
-            await sendEvent({ action: 'payed' });
-        } catch (error) {
-            console.warn(error);
-        }
+        await sendEvent({ action: 'payed' });
+        if (statisticId) await sendStatisticPayed(statisticId);
+        await printEvent(photoPath);
     };
 
     const handlePasswordSubmit = async () => {
