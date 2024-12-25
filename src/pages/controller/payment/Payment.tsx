@@ -23,8 +23,8 @@ export const Payment = () => {
             setAlertState('pending');
             const response = await paymentEvent();
             if (response.result === 'success') {
-                await handlePaymentSuccess();
                 setAlertState('success');
+                await handlePaymentSuccess();
             } else {
                 setAlertState('failed');
             }
