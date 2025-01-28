@@ -53,12 +53,26 @@ export const Camera = () => {
             const y = (canvas.height - video.videoHeight * scale) / 2;
 
             ctx.save();
-            // ctx.translate(canvas.width, 0); // Зеркальное отображение
-            // ctx.scale(-1, 1);
+            ctx.translate(canvas.width, 0); // Зеркальное отображение
+            ctx.scale(-1, 1);
             ctx.drawImage(video, x, y, video.videoWidth * scale, video.videoHeight * scale);
             ctx.restore();
 
             animationFrameId = requestAnimationFrame(drawToCanvas);
+
+            // ctx.clearRect(0, 0, canvas.width, canvas.height);
+            //
+            // const scale = Math.max(canvas.width / video.videoWidth, canvas.height / video.videoHeight);
+            // const x = (canvas.width - video.videoWidth * scale) / 2;
+            // const y = (canvas.height - video.videoHeight * scale) / 2;
+            //
+            // ctx.save();
+            // ctx.translate(canvas.width, 0); // Зеркальное отображение
+            // ctx.scale(-1, 1);
+            // ctx.drawImage(video, x, y, video.videoWidth * scale, video.videoHeight * scale);
+            // ctx.restore();
+
+            // animationFrameId = requestAnimationFrame(drawToCanvas);
 
             // ctx.clearRect(0, 0, canvas.width, canvas.height);
             //
