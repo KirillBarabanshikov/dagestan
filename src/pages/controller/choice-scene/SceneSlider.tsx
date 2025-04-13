@@ -13,9 +13,16 @@ interface ISceneSliderProps {
     onSlideChange: (swiper: SwiperType) => void;
     swiperRef: MutableRefObject<SwiperType | null>;
     currentSlide: number;
+    handleSelect: () => void;
 }
 
-export const SceneSlider: FC<ISceneSliderProps> = ({ scenes, onSlideChange, swiperRef, currentSlide }) => {
+export const SceneSlider: FC<ISceneSliderProps> = ({
+    scenes,
+    onSlideChange,
+    swiperRef,
+    currentSlide,
+    handleSelect,
+}) => {
     return (
         <Swiper
             slidesPerView={3}
@@ -35,6 +42,7 @@ export const SceneSlider: FC<ISceneSliderProps> = ({ scenes, onSlideChange, swip
                             alt={'scene'}
                             draggable={false}
                             transition={{ damping: 0 }}
+                            onClick={handleSelect}
                         />
                     </SwiperSlide>
                 );

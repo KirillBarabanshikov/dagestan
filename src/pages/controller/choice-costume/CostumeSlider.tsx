@@ -13,9 +13,16 @@ interface ICostumeSliderProps {
     onSlideChange: (swiper: SwiperType) => void;
     swiperRef: MutableRefObject<SwiperType | null>;
     currentSlide: number;
+    handleSelect: () => void;
 }
 
-export const CostumeSlider: FC<ICostumeSliderProps> = ({ costumes, onSlideChange, swiperRef, currentSlide }) => {
+export const CostumeSlider: FC<ICostumeSliderProps> = ({
+    costumes,
+    onSlideChange,
+    swiperRef,
+    currentSlide,
+    handleSelect,
+}) => {
     return (
         <Swiper
             slidesPerView={3}
@@ -36,6 +43,7 @@ export const CostumeSlider: FC<ICostumeSliderProps> = ({ costumes, onSlideChange
                             alt={costume.title}
                             draggable={false}
                             transition={{ damping: 0 }}
+                            onClick={handleSelect}
                         />
                     </SwiperSlide>
                 );

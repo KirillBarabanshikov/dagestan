@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Swiper as SwiperType } from 'swiper';
 
@@ -14,6 +14,7 @@ export const ChoiceCostume = () => {
     const swiperRef = useRef<SwiperType | null>(null);
     const navigate = useNavigate();
     const { gender, costume, setCostume, setStatisticId } = useControllerStore((state) => state);
+    const [isLoading, setIsLoading] = useState(false);
 
     const { data: costumes = [] } = useQuery({
         queryKey: ['costumes', gender],
@@ -46,9 +47,10 @@ export const ChoiceCostume = () => {
     }, [currentCostume]);
 
     const handleSelect = async () => {
-        if (!currentCostume) return;
+        if (!currentCostume || isLoading) return;
 
         try {
+            setIsLoading(true);
             const statisticId = await sendChoiceCostume(currentCostume.id);
             setStatisticId(statisticId);
             await sendEvent({ action: 'selectCostume', payload: currentCostume });
@@ -56,6 +58,8 @@ export const ChoiceCostume = () => {
             navigate('/controller/choice-scene');
         } catch (error) {
             console.error(error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -73,12 +77,10 @@ export const ChoiceCostume = () => {
         }
     };
 
-    if (!costumes.length) return <></>;
-
     return (
         <div className={styles.choiceCostume}>
             <div className={styles.titleWrap}>
-                <h2>{currentCostume.title}</h2>
+                {currentCostume && <h2>{currentCostume.title}</h2>}
                 <Button theme={'lightgreen'} size={'sm'} onClick={handleBack} className={styles.button}>
                     назад
                 </Button>
@@ -89,17 +91,20 @@ export const ChoiceCostume = () => {
                     onSlideChange={handleSlideChange}
                     swiperRef={swiperRef}
                     currentSlide={currentSlide}
+                    handleSelect={handleSelect}
                 />
             </div>
-            <div className={styles.buttonsWrap}>
-                <Button theme={'white'} onClick={() => swiperRef.current?.slidePrev()} className={styles.prev}>
-                    предыдущий
-                </Button>
-                <Button onClick={handleSelect}>выбрать</Button>
-                <Button theme={'white'} onClick={() => swiperRef.current?.slideNext()} className={styles.next}>
-                    следующий
-                </Button>
-            </div>
+            {!!costumes.length && (
+                <div className={styles.buttonsWrap}>
+                    <Button theme={'white'} onClick={() => swiperRef.current?.slidePrev()} className={styles.prev}>
+                        предыдущий
+                    </Button>
+                    <Button onClick={handleSelect}>выбрать</Button>
+                    <Button theme={'white'} onClick={() => swiperRef.current?.slideNext()} className={styles.next}>
+                        следующий
+                    </Button>
+                </div>
+            )}
         </div>
     );
 };

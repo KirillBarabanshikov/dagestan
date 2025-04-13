@@ -53,17 +53,6 @@ export const ChoiceScene = () => {
         }
     };
 
-    const handleChangeScene = () => {
-        if (!costume) return;
-
-        if (costume.scenes.length >= 4) {
-            swiperRef.current?.slideNext();
-        } else {
-            const nextIndex = currentSlide === costume.scenes.length - 1 ? 0 : currentSlide + 1;
-            swiperRef.current?.slideTo(nextIndex);
-        }
-    };
-
     const handleCreatePhoto = async () => {
         try {
             setModalState('second');
@@ -110,13 +99,17 @@ export const ChoiceScene = () => {
                         onSlideChange={handleChangeSlide}
                         swiperRef={swiperRef}
                         currentSlide={currentSlide}
+                        handleSelect={() => setModalState('first')}
                     />
                 </div>
                 <div className={styles.buttonsWrap}>
-                    <Button theme={'white'} onClick={handleChangeScene} className={styles.prev}>
-                        Другая позиция
+                    <Button theme={'white'} onClick={() => swiperRef.current?.slidePrev()} className={styles.prev}>
+                        предыдущий
                     </Button>
                     <Button onClick={() => setModalState('first')}>выбрать</Button>
+                    <Button theme={'white'} onClick={() => swiperRef.current?.slideNext()} className={styles.next}>
+                        следующий
+                    </Button>
                 </div>
             </div>
             <Modal isOpen={modalState === 'first'} onClose={() => setModalState('none')} maxWidth={'1788px'}>

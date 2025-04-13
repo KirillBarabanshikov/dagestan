@@ -13,8 +13,10 @@
 
     .person {
         position: absolute;
-        top: 327px;
-        left: 288.55px;
+        bottom: -250px;
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 1200px;
     }
 
     .timer {
