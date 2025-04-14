@@ -6,6 +6,7 @@ import { Swiper as SwiperType } from 'swiper';
 import { CostumeSlider } from '@/pages/controller/choice-costume/CostumeSlider.tsx';
 import { fetchCostumes, sendChoiceCostume, sendEvent } from '@/shared/api';
 import { useControllerStore } from '@/shared/store';
+import { ICostume } from '@/shared/types';
 import { Button } from '@/shared/ui';
 
 import styles from './ChoiceCostume.module.scss';
@@ -46,7 +47,7 @@ export const ChoiceCostume = () => {
         handleEvent();
     }, [currentCostume]);
 
-    const handleSelect = async () => {
+    const handleSelect = async (currentCostume?: ICostume) => {
         if (!currentCostume || isLoading) return;
 
         try {
@@ -63,7 +64,7 @@ export const ChoiceCostume = () => {
         }
     };
 
-    const handleSlideChange = async (swiper: SwiperType) => {
+    const handleSlideChange = (swiper: SwiperType) => {
         const newCostume = costumes[swiper.realIndex];
         if (newCostume) setCostume(newCostume);
     };
@@ -74,6 +75,15 @@ export const ChoiceCostume = () => {
             navigate('/controller');
         } catch (error) {
             console.error(error);
+        }
+    };
+
+    const handleOnTapCostume = async (index: number) => {
+        swiperRef.current?.slideToLoop(index);
+        const newCostume = costumes[index];
+        if (newCostume) {
+            setCostume(newCostume);
+            await handleSelect(newCostume);
         }
     };
 
@@ -91,7 +101,7 @@ export const ChoiceCostume = () => {
                     onSlideChange={handleSlideChange}
                     swiperRef={swiperRef}
                     currentSlide={currentSlide}
-                    handleSelect={handleSelect}
+                    handleSelect={handleOnTapCostume}
                 />
             </div>
             {!!costumes.length && (
@@ -99,7 +109,7 @@ export const ChoiceCostume = () => {
                     <Button theme={'white'} onClick={() => swiperRef.current?.slidePrev()} className={styles.prev}>
                         предыдущий
                     </Button>
-                    <Button onClick={handleSelect}>выбрать</Button>
+                    <Button onClick={() => handleSelect(currentCostume)}>выбрать</Button>
                     <Button theme={'white'} onClick={() => swiperRef.current?.slideNext()} className={styles.next}>
                         следующий
                     </Button>

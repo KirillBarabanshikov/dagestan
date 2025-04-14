@@ -99,7 +99,10 @@ export const ChoiceScene = () => {
                         onSlideChange={handleChangeSlide}
                         swiperRef={swiperRef}
                         currentSlide={currentSlide}
-                        handleSelect={() => setModalState('first')}
+                        handleSelect={(index) => {
+                            swiperRef.current?.slideToLoop(index);
+                            setModalState('first');
+                        }}
                     />
                 </div>
                 <div className={styles.buttonsWrap}>

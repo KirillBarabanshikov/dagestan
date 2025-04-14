@@ -13,7 +13,7 @@ interface ICostumeSliderProps {
     onSlideChange: (swiper: SwiperType) => void;
     swiperRef: MutableRefObject<SwiperType | null>;
     currentSlide: number;
-    handleSelect: () => void;
+    handleSelect: (index: number) => void;
 }
 
 export const CostumeSlider: FC<ICostumeSliderProps> = ({
@@ -43,7 +43,7 @@ export const CostumeSlider: FC<ICostumeSliderProps> = ({
                             alt={costume.title}
                             draggable={false}
                             transition={{ damping: 0 }}
-                            onClick={handleSelect}
+                            onClick={() => handleSelect(index)}
                         />
                     </SwiperSlide>
                 );

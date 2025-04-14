@@ -13,7 +13,7 @@ interface ISceneSliderProps {
     onSlideChange: (swiper: SwiperType) => void;
     swiperRef: MutableRefObject<SwiperType | null>;
     currentSlide: number;
-    handleSelect: () => void;
+    handleSelect: (index: number) => void;
 }
 
 export const SceneSlider: FC<ISceneSliderProps> = ({
@@ -42,7 +42,7 @@ export const SceneSlider: FC<ISceneSliderProps> = ({
                             alt={'scene'}
                             draggable={false}
                             transition={{ damping: 0 }}
-                            onClick={handleSelect}
+                            onClick={() => handleSelect(index)}
                         />
                     </SwiperSlide>
                 );
