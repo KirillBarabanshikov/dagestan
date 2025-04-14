@@ -63,7 +63,9 @@ export async function sendUserFace(body: { userFaceImage: File; sceneId: number 
 
 export async function fetchFaceSwapPhoto(id: number) {
     try {
-        const response = await instance.get<{ id: number; image: string }>(`/face_swap_photos/${id}`);
+        const response = await instance.get<{ id: number; image: string; imagePrint: string }>(
+            `/face_swap_photos/${id}`,
+        );
         return response.data;
     } catch (error) {
         throw new Error(`Failed to fetch swap photo: ${error}`);
