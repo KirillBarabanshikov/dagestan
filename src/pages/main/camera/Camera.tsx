@@ -53,6 +53,9 @@ export const Camera = () => {
             const y = (canvas.height - video.videoHeight * scale) / 2;
 
             ctx.save();
+            ctx.translate(canvas.width / 2, canvas.height / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.translate(-canvas.height / 2, -canvas.width / 2);
             ctx.drawImage(video, x, y, video.videoWidth * scale, video.videoHeight * scale);
             ctx.restore();
 
