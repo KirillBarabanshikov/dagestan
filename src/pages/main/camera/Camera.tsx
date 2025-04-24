@@ -48,15 +48,12 @@ export const Camera = () => {
         const drawToCanvas = () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            const scale = Math.max(canvas.width / video.videoWidth, canvas.height / video.videoHeight);
-            const x = (canvas.width - video.videoWidth * scale) / 2;
-            const y = (canvas.height - video.videoHeight * scale) / 2;
-
             ctx.save();
             ctx.translate(canvas.width / 2, canvas.height / 2);
             ctx.rotate(-Math.PI / 2);
+            ctx.scale(1, -1);
             ctx.translate(-canvas.height / 2, -canvas.width / 2);
-            ctx.drawImage(video, x, y, video.videoWidth * scale, video.videoHeight * scale);
+            ctx.drawImage(video, 0, 0, videoWidth, videoHeight);
             ctx.restore();
 
             animationFrameId = requestAnimationFrame(drawToCanvas);
